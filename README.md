@@ -62,6 +62,10 @@ fig = plt.figure(figsize=(0.72, 0.72))
 
 
 
+
+https://user-images.githubusercontent.com/48916506/188779524-7d1ba81b-3647-4d74-89b4-cc309c96cf0a.mov
+
+
 #### Training
 
 #### Testing
