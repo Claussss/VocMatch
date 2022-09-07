@@ -62,10 +62,49 @@ fig = plt.figure(figsize=(0.72, 0.72))
 
 
 
+Example of an **instrumental** audio and the corresponding mel-spectrogram from the **train** dataset:
+
 
 https://user-images.githubusercontent.com/48916506/188779524-7d1ba81b-3647-4d74-89b4-cc309c96cf0a.mov
 
 ![baba_yaga_beat_section_1](https://user-images.githubusercontent.com/48916506/188780313-38da16d4-3beb-4ed4-8838-785ba30419eb.png)
+
+
+
+Example of vocals that are supposed to sound good with the instrumental showed above because they are taken from the same project:
+
+
+
+https://user-images.githubusercontent.com/48916506/188781071-2f0f0298-dd5b-460c-9651-d58e0d5bf31b.mov
+
+
+![baba_yaga_vox1_section_1](https://user-images.githubusercontent.com/48916506/188781089-7286b865-7345-4715-a93c-b94376863894.png)
+
+
+
+https://user-images.githubusercontent.com/48916506/188781099-701bd900-9a70-48b6-ac4a-138e4844fd45.mov
+
+
+![baba_yaga_vox3_section_1](https://user-images.githubusercontent.com/48916506/188781106-d07d2b99-f95d-40db-8f57-3a0f1b7f04ed.png)
+
+
+
+Example of vocals that are taken from a different project (their distance from the instrumental provided above in the embedding space is supposed to be bigger than the vocals provided above):
+
+
+
+https://user-images.githubusercontent.com/48916506/188781443-43e57cf5-b8ba-424b-8928-5cec30cbbf17.mov
+
+
+![be_afraid_my_enemy_vox1_section_1](https://user-images.githubusercontent.com/48916506/188781448-3b416199-a531-4be3-a34c-b4564a5a1ca0.png)
+
+
+
+https://user-images.githubusercontent.com/48916506/188781466-1f7c4743-d7b3-4f98-97d5-c1f0afb5fb54.mov
+
+
+![be_afraid_my_enemy_vox2_section_3](https://user-images.githubusercontent.com/48916506/188781480-41f90a7e-f7d4-42b9-a5e2-2aad760c2a08.png)
+
 
 #### Training
 
