@@ -107,8 +107,38 @@ https://user-images.githubusercontent.com/48916506/188781466-1f7c4743-d7b3-4f98-
 
 
 #### Training
+I trained a VAE with resnet18 backbone using the following hyperparameters:
+
+| Hyperparameter    | Value |
+|:------------------|:-----:|
+| lr                | 1e-3  |
+| epochs            |  100  |
+| batch_size        |  16   |
+| latent_space_size |  128  |
+
+As the preprocessing, I converted the png images to **grayscale** and **resized** them to **(216,216)**.
 
 #### Testing
+To test the model, I performed the following steps:
+1) Selected 5 instrumentals from the test dataset
+2) Found the distances from every instrumental to every vocal
+3) Sorted the results based on the distance, and saved them in a spreadsheet
+
+I made the rows for vocals from the same project green, so, ideally, we would have all the 'green rows' on the top, which means they
+have the smallest distances to a specific instrumental.
+
+(you can find an example of a spreadsheet for one of the instrumentals in src)
 
 
 ### Ideas to try
+
+Unfortunately, the current approach didn't work.
+I observed that the model clusters audio pieces that were cut from 
+the same audio track. So, the model clusters more based on acoustic features, and the properties of the sound itself,
+which is understandable because I train on mel-spectrograms.
+
+I think I should try using a visual representation of audio that captures some music features,
+like chromogram. Or I should rely more on hand-crafted features like tempo or the key.
+
+Also, a supervised approach can be explored. For example, training with pairs of a vocal and instrumental that 'sound good' together.
+
