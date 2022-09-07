@@ -65,6 +65,7 @@ fig = plt.figure(figsize=(0.72, 0.72))
 
 https://user-images.githubusercontent.com/48916506/188779524-7d1ba81b-3647-4d74-89b4-cc309c96cf0a.mov
 
+![baba_yaga_beat_section_1](https://user-images.githubusercontent.com/48916506/188780313-38da16d4-3beb-4ed4-8838-785ba30419eb.png)
 
 #### Training
 
