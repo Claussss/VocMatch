@@ -8,8 +8,8 @@ from tqdm import tqdm
 import shutil
 import numpy as np
 
-path_to_result = r'D:\Education\Projects\FiZam\data\audio_dataset'
-path_to_files = r'D:\Education\Projects\FiZam\data\sections'
+path_to_result = r'data\audio_dataset'
+path_to_files = r'data\sections'
 # Train, valid, test percentages
 # Has to sum up to 1
 split_percentages = {'train': 0.8,

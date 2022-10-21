@@ -10,9 +10,9 @@ from tqdm import tqdm
 from pydub import AudioSegment, effects
 
 # Every section is 20 sec
-DEFAULT_DURATION_SECONDS = 20
-path_to_result = r'D:\Education\Projects\FiZam\data\sections'
-path_to_files = r'D:\Education\Projects\FiZam\data\full_beats'
+DEFAULT_DURATION_SECONDS = 10
+path_to_result = r'data\sections'
+path_to_files = r'data\full_beats'
 
 if __name__ == '__main__':
     file_names = os.listdir(path_to_files)

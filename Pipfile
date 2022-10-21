@@ -5,6 +5,11 @@ name = "pypi"
 
 [packages]
 jupyter = "*"
+pydub = "*"
+tqdm = "*"
+numpy = "*"
+librosa = "*"
+matplotlib = "*"
 
 [dev-packages]
 

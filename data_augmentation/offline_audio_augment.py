@@ -15,16 +15,16 @@ from tqdm import tqdm
 import soundfile as sf
 import numpy as np
 
-path_to_files = r'D:\Education\Projects\FiZam\data\audio_dataset\train'
-path_to_results = r'D:\Education\Projects\FiZam\data\audio_dataset\train'
+path_to_files = r'data\audio_dataset\train'
+path_to_results = r'data\audio_dataset\train'
 
-WHITE_NOISE_CHANCE = 0.6
-TIME_STRETCH_CHANCE = 0.8
-PITCH_SCALE_CHANCE = 0.8
+WHITE_NOISE_CHANCE = 0.15
+TIME_STRETCH_CHANCE = 0.35
+PITCH_SCALE_CHANCE = 0.35
 
-NOISE_FACTOR_RANGE = (0, 0.05)
+NOISE_FACTOR_RANGE = (0, 0.035)
 STRETCH_RATE_RANGE = (0.9, 1)
-NUM_SEMITONS_RANGE = (-3, 3)
+NUM_SEMITONS_RANGE = (-2, 2)
 
 
 def add_white_noise(signal, noise_factor):
