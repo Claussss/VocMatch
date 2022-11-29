@@ -1,5 +1,5 @@
 # VocMatch
-idea of the project is to automatically match existing instruments to recorded vocal inputs that sound harmonic within rhythmic and textural analysis.
+The idea of the project is to automatically match existing instruments to recorded vocal inputs that sound harmonic within rhythmic and textural analysis.
 
 
 The final user interface would look like:
