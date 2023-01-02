@@ -1,68 +1,36 @@
 # VocMatch
-The idea of the project is to automatically match existing instruments to recorded vocal inputs that sound harmonic within rhythmic and textural analysis.
+The concept of the project is to utilize chroma, tempo, and MFCC-based features to match existing arrangments to recorded vocal inputs.
 
+The user interface of the final product will appear as follows:
+1) The user vocalizes for 10 seconds
+2) The algorithm searches the database with encoded fingerprints of arrangments
+3) The algorithm produces a ranked list of the top K arrangements in order of similarity to the vocal.
 
-The final user interface would look like:
-1) User sings for 20 seconds
-2) The program searches the database with encoded fingerprints of instrumentals
-3) The program outputs a sorted list of top K instrumentals that 'sound nice' with the recorded vocal 
+The greater the similarity, the more agreeable the vocal and arrangement sound when mixed together.
 
+This project is intended to facilitate the process of finding ready arrangements for songs for artists and to provide budding producers with an opportunity to promote their arrangements.
 
 ### VAE Approach
 
 #### Intuition
-The current approach relies on using Variational Autoencoder. Namely, I use the Encoder to produce 
-embeddings of mel-spectograms of instrumentals and vocals, and I try to find the cosine distance between the embeddings.
-The smaller the distance, the more similar are the audio fragments. Thus, if we try to find the distance
-between the embedding of a vocal and an instrumental, the smaller the distance, the "better" they sound together. 
+This approach uses Variational Autoencoder to generate embeddings for mel-spectograms of vocals and arrangments. The cosine distance is utilized to calculate the similarity between vocal and arrangement embeddings.
 
 #### Data
 
-1) For the dataset I used vocal tracks and the corresponding instrumental tracks 
-exported from my personal music projects. 
+1) For the dataset I used vocals and the corresponding arrangments exported from my personal music projects. 
 I **normalized the volume** of every track,
-so the instrumentals and the vocals have the same volume range. 
-I split every track on multiple **20 second sections**. In the end, 
-I had about **1k** 20-second pieces of vocals and instrumentals in **train** dataset, 
-**200** in the valid, and **200** in the test dataset.
+so the arrangments and the vocals have the same volume range. 
+I divided each track into multiple **10-second segments**. In the end, 
+I had approximately **2,000** 10-second pieces of vocals and arrangements in the **training** dataset, **400** in the validation dataset, and **400** in the testing dataset.
 
 2) I applied the following audio augmentations randomly on the train dataset: 
 **white noise, time stretch, and pitch scale**. (I used default functions from 
-librosa.effects). As the result, I had about **3k** images in the **train** dataset.
-3) I created normalized spectrograms from the audio dataset using the following code:
-
-``
-stft = librosa.stft(signal, n_fft=FRAME_SIZE,  hop_length=HOP_LENGTH)[:-1]
-``
-<br />
-``spectogram = np.abs(stft)``
-<br />
-``log_spectogram = librosa.amplitude_to_db(spectogram)``
-<br />
-``normalized_log_spectogram = (log_spectogram - log_spectogram.min()) / (log_spectogram.max() - log_spectogram.min())``
-
-4) I converted the normalized log spectograms to png images with the size of 223x221 using the following code:
+librosa.effects). As the result, I had about **6,000** elements in the **train** dataset.
+3) I created normalized spectrograms from the audio dataset.
+4) I converted the normalized log spectograms to png images with the size of 223x221.
 
 
-``
-fig = plt.figure(figsize=(0.72, 0.72))
-   ``
-   <br />
-   ``ax = fig.add_subplot(111)``
-   <br />
-   ``ax.axes.get_xaxis().set_visible(False)``
-   <br />
-   ``ax.axes.get_yaxis().set_visible(False)``
-    <br />
-    ``ax.set_frame_on(False)``
-    <br />
-    ``librosa.display.specshow(spectogram)``
-    <br />
-    ``plt.savefig(save_path, dpi=400, bbox_inches='tight', pad_inches=0)``
-
-
-
-Example of an **instrumental** audio and the corresponding mel-spectrogram from the **train** dataset:
+Example of an **arrangement** audio and the corresponding mel-spectrogram from the **train** dataset:
 
 
 https://user-images.githubusercontent.com/48916506/188779524-7d1ba81b-3647-4d74-89b4-cc309c96cf0a.mov
@@ -71,7 +39,7 @@ https://user-images.githubusercontent.com/48916506/188779524-7d1ba81b-3647-4d74-
 
 
 
-Example of vocals that are supposed to sound good with the instrumental showed above because they are taken from the same project:
+Example of a vocal that is supposed to have a high similarity with the arrangement shown above because they are taken from the same project:
 
 
 
@@ -89,7 +57,7 @@ https://user-images.githubusercontent.com/48916506/188781099-701bd900-9a70-48b6-
 
 
 
-Example of vocals that are taken from a different project (their distance from the instrumental provided above in the embedding space is supposed to be bigger than the vocals provided above):
+Example of vocals that are taken from a different project (their distance from the arrangement provided above in the embedding space is supposed to be bigger than the vocals provided above):
 
 
 
@@ -107,7 +75,7 @@ https://user-images.githubusercontent.com/48916506/188781466-1f7c4743-d7b3-4f98-
 
 
 #### Training
-I trained a VAE with resnet18 backbone using the following hyperparameters:
+I employed a Variational Autoencoder (VAE) with a ResNet18 backbone and the following hyperparameters for training:
 
 | Hyperparameter    | Value |
 |:------------------|:-----:|
@@ -119,18 +87,23 @@ I trained a VAE with resnet18 backbone using the following hyperparameters:
 As the preprocessing, I converted the png images to **grayscale** and **resized** them to **(216,216)**.
 
 #### Testing
-To test the model, I performed the following steps:
-1) Selected 5 instrumentals from the test dataset
-2) Found the distances from every instrumental to every vocal
+I have conducted tests on the algorithm in two distinct ways.
+First of all, I performed the following steps:
+1) Selected 5 arrangements from the test dataset
+2) Found the distances from every arrangement to every vocal
 3) Sorted the results based on the distance, and saved them in a spreadsheet
 
 I made the rows for vocals from the same project green, so, ideally, we would have all the 'green rows' on the top, which means they
-have the smallest distances to a specific instrumental.
+have the smallest distances to a specific arrangement.
 
 (you can find an example of a spreadsheet for one of the instrumentals in src)
 
 ![Screenshot_1](https://user-images.githubusercontent.com/48916506/188788033-d3b2789f-6c1a-4acc-a009-e765af27cc84.png)
 
+Second of all, I used a dimensionality reduction algorithm on the embeddings, so that I could plot them as a scatter plot.
+Crosses correpond to arrangements (instrumentals), and circles to vocals. Audio from the same project have the same size and color of markings.
+
+![987](https://user-images.githubusercontent.com/48916506/210194479-1293945f-4659-41d4-a088-78f55a10e5f3.png)
 
 ### Ideas to try
 
