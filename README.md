@@ -169,7 +169,8 @@ In order to test the algorithm automatically, I calculated correlations between 
 
 An example of the spreadsheet with correlations for the "i_am_same_as_u" project is provided here.
 
-![Screenshot_2](https://user-images.githubusercontent.com/48916506/210281606-fc074c02-5ebc-49f4-894d-18f4a4522d35.png)
+![Screenshot_2](https://user-images.githubusercontent.com/48916506/210282314-8760757a-5be7-45d5-857b-359cd8eddb47.png)
+
 
 #### Conclusion
 
