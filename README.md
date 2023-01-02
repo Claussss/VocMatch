@@ -105,15 +105,74 @@ Crosses correpond to arrangements (instrumentals), and circles to vocals. Audio 
 
 ![987](https://user-images.githubusercontent.com/48916506/210194479-1293945f-4659-41d4-a088-78f55a10e5f3.png)
 
-### Ideas to try
+#### Conclusion
 
-Unfortunately, the current approach didn't work.
-I observed that the model clusters audio pieces that were cut from 
-the same audio track. So, the model clusters more based on acoustic features, and the properties of the sound itself,
-which is understandable because I train on mel-spectrograms.
+Despite tuning the hyperparameters, the VAE was unable to cluster audios from the same project together, as evidenced by both the scatterplot and the spreadsheet. Embeddings generated from various audio representations, such as tempogram and chromagram, yield similar results. Increasing the quantity of vocal recordings and their corresponding accompaniments may enable the VAE to learn the patterns present in the data.
 
-I think I should try using a visual representation of audio that captures some music features,
-like chromogram. Or I should rely more on hand-crafted features like tempo or the key.
+### Pitch Curve Approach
 
-Also, a supervised approach can be explored. For example, training with pairs of a vocal and instrumental that 'sound good' together.
+#### Intuition
+This approach is based on the extraction of pitch curves from monophonic audio recordings and polyphonic accompaniments for the subsequent calculation of similarity.
 
+#### Data
+
+For the dataset I used vocals and the corresponding arrangments exported from my personal music projects.
+
+I **normalized the volume** of every track,
+so the arrangments and the vocals have the same volume range. 
+I divided each vocal track into multiple **10-second segments**.
+
+I manually selected a 60-second segment from each instrumental track which I believe best encapsulates the overall arrangement. I then proceeded to filter the segments by only taking frequencies between 20 and 200 Hz to extract the bassline, which is monophonic. By undertaking this, I can employ the same pitch extraction algorithm for both the vocal and arrangement.
+
+#### Algorithm
+
+1) I utilize CREPE to extract pitch curves from the vocal and bassline.
+2) I utilize a Savitzky-Golay filter to smooth both of the pitch curves in order to focus the comparison more on the melody itself rather than small oscillations such as vibrato in vocal recordings.
+3) By employing a sliding window technique, I am able to compute the Pearson correlation between the 10-second vocal pitch curve and each section of the 60-second bassline pitch curve.
+4) Filter out sections wherein correlations are lower than the threshold.
+
+
+![654](https://user-images.githubusercontent.com/48916506/210279502-0977a808-ee1c-4375-9056-f22fc692076b.png)
+
+
+The final similarity is calculated by taking the average of the correlations between all sections.
+
+#### Testing
+
+To test the algorithm, I overlaid pitch curves and mixed the vocal with the original arrangement at the location with the greatest correlation.
+
+![Screenshot_1](https://user-images.githubusercontent.com/48916506/210280107-ec4c94f8-0d59-4889-9a5d-fbb97e0ca287.png)
+
+An example of audio generated from the algorithm's predictions is provided here:
+
+
+
+https://user-images.githubusercontent.com/48916506/210280168-1eb9685a-00e9-473b-b829-d0e4cd2f9af7.mov
+
+
+An example of the original song from which the vocal and arrangement were derived can be found here:
+
+
+https://user-images.githubusercontent.com/48916506/210280218-40800adb-2789-4bce-83dc-6bcdc8d992ba.mov
+
+It appears that the algorithm has positioned the vocal close to the original vocal's starting point. However, the algorithm also yields high similarity for vocals from other projects, as exemplified below.
+
+
+
+https://user-images.githubusercontent.com/48916506/210280879-23d3344e-c795-4416-9e2d-29317dfdac78.mov
+
+
+It is difficult say whether the melody of the second example is similar to the melody of the arrangement due to the algorithm's offset which displaces the vocals slightly. 
+
+
+In order to test the algorithm automatically, I calculated correlations between a bassline and all the vocals, hypothesizing that vocals from the same project as the bassline would have a higher correlation.
+
+An example of the spreadsheet with correlations for the "i_am_same_as_u" project is provided here.
+
+![Screenshot_2](https://user-images.githubusercontent.com/48916506/210281606-fc074c02-5ebc-49f4-894d-18f4a4522d35.png)
+
+#### Conclusion
+
+The results yielded by the algorithm indicated that vocals from the same project as the bassline did not demonstrate a higher correlation, and vocals from the same project and sections did not exhibit a comparable Pearson correlation value in spite of vocalizing the same melody. 
+
+It is possible that the bassline pitch curve may not accurately reflect the melody of an arrangement. Consequently, employing an algorithm that extracts pitch from non-monophonic audio to acquire a pitch curve from the original arrangement could potentially improve the results of the algorithm.
