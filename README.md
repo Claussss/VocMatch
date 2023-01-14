@@ -3,10 +3,10 @@ The concept of the project is to utilize chroma, tempo, and MFCC-based features 
 
 The user interface of the final product will appear as follows:
 1) The user vocalizes for 10 seconds
-2) The algorithm searches the database with encoded fingerprints of arrangments
+2) The algorithm searches the database with encoded features of arrangments
 3) The algorithm produces a ranked list of the top K arrangements in order of similarity to the vocal.
 
-The greater the similarity, the more agreeable the vocal and arrangement sound when mixed together.
+The greater the similarity, the more agreeable the vocal and arrangement sound when mixed together. This is a variation of the Query by Humming algorithm, which focuses on determining the compatibility of vocals with an instrumental track.
 
 This project is intended to facilitate the process of finding ready arrangements for songs for artists and to provide budding producers with an opportunity to promote their arrangements.
 
@@ -112,7 +112,7 @@ Despite tuning the hyperparameters, the VAE was unable to cluster audios from th
 ### Pitch Curve Approach
 
 #### Intuition
-This approach is based on the extraction of pitch curves from monophonic audio recordings and polyphonic accompaniments for the subsequent calculation of similarity.
+This approach is based on the extraction of pitch curves from monophonic audio recordings and polyphonic arrangements for the subsequent calculation of similarity.
 
 #### Data
 
@@ -122,7 +122,10 @@ I **normalized the volume** of every track,
 so the arrangments and the vocals have the same volume range. 
 I divided each vocal track into multiple **10-second segments**.
 
-I manually selected a 60-second segment from each instrumental track which I believe best encapsulates the overall arrangement. I then proceeded to filter the segments by only taking frequencies between 20 and 200 Hz to extract the bassline, which is monophonic. By undertaking this, I can employ the same pitch extraction algorithm for both the vocal and arrangement.
+
+In order to extract the melody from polyphonic arrangements, I use a simplified variation of a Source Separation algorithm. This technique primarily involves isolating frequencies between 20 and 200 Hz, in order to obtain the monophonic bassline of the arrangement. By undertaking this, I can employ the same pitch extraction algorithm for both the vocal and arrangement.
+
+Before extracting the bassline,  I manually selected a 60-second segment from each instrumental track which I believe best encapsulates the overall arrangement.
 
 #### Algorithm
 
@@ -176,4 +179,4 @@ An example of the spreadsheet with correlations for the "i_am_same_as_u" project
 
 The results yielded by the algorithm indicated that vocals from the same project as the bassline did not demonstrate a higher correlation, and vocals from the same project and sections did not exhibit a comparable Pearson correlation value in spite of vocalizing the same melody. 
 
-It is possible that the bassline pitch curve may not accurately reflect the melody of an arrangement. Consequently, employing an algorithm that extracts pitch from non-monophonic audio to acquire a pitch curve from the original arrangement could potentially improve the results of the algorithm.
+It is possible that the bassline pitch curve may not accurately reflect the melody of an arrangement. Consequently, employing an algorithm that extracts pitch from a polyphonic audio to acquire a pitch curve from the original arrangement could potentially improve the results of the algorithm.
